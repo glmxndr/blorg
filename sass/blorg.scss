@@ -1,0 +1,165 @@
+/* ================ IMPORTS ================ */
+
+@import "compass/reset";
+//@import "compass/layout/grid-background";
+@import "compass/typography/vertical_rhythm";
+@include establish-baseline;
+
+/* ================ MAIN VARIABLES ================ */
+
+$txt-color: #333;
+$bg-color: white;
+$border-color: #bbb;
+
+$base-font-size: 16px;
+$base-line-height: 1.25*$base-font-size;
+$header-height: 5* $base-line-height;
+
+/* ================ MIXINS ================ */
+
+@mixin type-rythm($mult-base, $mult-font) {
+  font-size: $mult-font * $base-font-size;
+  line-height: $mult-base * $base-line-height;
+  text-transform: small-caps;
+  font-family: Ubuntu;
+  clear: both;
+  text-align: left;
+}
+
+@mixin type-rythm-margin($mult-base, $mult-font) {
+  @include type-rythm($mult-base, $mult-font);
+  margin-top: 0.75*$base-line-height;
+  margin-bottom: 0.25*$base-line-height;
+}
+
+/* ================ SCREEN ================ */
+
+@import url("http://fonts.googleapis.com/css?family=Ubuntu:300,400,700,300italic,400italic,700italic&subset=latin,greek");
+
+body {
+    background-color: black;
+    color: $txt-color;
+    font-family: 'Ubuntu', sans-serif;
+    margin: 0 auto;
+}
+
+header, footer {
+  clear: left;
+}
+
+header {
+  background-color: $bg-color;
+  border-bottom: 1px solid $border-color;
+  background-color: $bg-color;
+  text-align: center;
+  overflow: hidden;
+  padding: 0;
+  h1 {
+    font-family: Ubuntu;
+    font-weight: bold;
+    font-size: $header-height;
+    line-height: $header-height;
+  }
+}
+
+footer {
+  padding: $base-line-height;
+  background-color: black;
+  color: white;
+  text-align: center;
+  font-size: 80%;
+}
+
+div.main {
+  display: table;
+  width: 100%;
+  article, nav {
+    background-color: $bg-color;
+    display:table-cell;
+    padding: 0 1em $base-line-height;
+  }
+
+  article {
+    //@include baseline-grid-background($base-line-height, #ddd);
+    & > * {
+      max-width: 40em;
+      text-align: justify;
+    }
+    p + p {
+      text-indent: 2em;
+    }
+    h1 { @include type-rythm-margin(3,2.5); font-weight: bold; text-align: center; }
+    h2 { @include type-rythm-margin(2,2); font-weight: bold; }
+    h3 { @include type-rythm-margin(2,2); font-weight: normal; }
+    h4 { @include type-rythm-margin(2,2); font-weight: lighter; font-style: italic; }
+    h5 { @include type-rythm(2,1.5); font-weight: normal; }
+    h6 { @include type-rythm(2,1.5); font-weight: lighter; font-style: italic; }
+    ul {
+      list-style-type: circle;
+      margin-left: 2em;
+    }
+  }
+  nav {
+    width: 33%;
+    border-right: 1px solid $border-color;
+    text-align: right;
+    ul {
+      list-style: none;
+      padding-right: 2em;
+      li {
+        color: gray;
+      }
+    }
+    a {
+      color: $txt-color;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    a.selected {
+      font-style: italic;
+    }
+  }
+}
+
+/* ================ MOBILE/SMALL SCREEN ================ */
+
+@media screen and (max-width: 640px) {
+  div.main {
+    article, nav {
+      margin-bottom: $base-line-height;
+      display:block;
+      width: 100%;
+      padding: $base-line-height 0;
+      margin: 0;
+      max-width: 640px;
+      float: right;
+      clear: both;
+      border-bottom: 1px solid gray;
+      border-right: 0;
+      & > * {
+        padding: 0 0.5em;
+      }
+    }
+  }
+}
+
+/* ================ PRINT ================ */
+
+@media print {  div.main {
+    article, nav {
+      margin-bottom: $base-line-height;
+      display:block;
+      width: 100%;
+      padding: $base-line-height 0;
+      margin: 0;
+      max-width: 640px;
+      float: right;
+      clear: both;
+      border-bottom: 1px solid gray;
+      border-right: 0;
+      & > * {
+        padding: 0 0.5em;
+      }
+    }
+  }
+}

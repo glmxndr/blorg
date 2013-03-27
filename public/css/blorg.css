@@ -1,0 +1,246 @@
+@import url("http://fonts.googleapis.com/css?family=Ubuntu:300,400,700,300italic,400italic,700italic&subset=latin,greek");
+/* ================ IMPORTS ================ */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+
+html {
+  line-height: 1;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+q, blockquote {
+  quotes: none;
+}
+q:before, q:after, blockquote:before, blockquote:after {
+  content: "";
+  content: none;
+}
+
+a img {
+  border: none;
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
+  display: block;
+}
+
+* html {
+  font-size: 100%;
+}
+
+html {
+  font-size: 16px;
+  line-height: 1.5em;
+}
+
+/* ================ MAIN VARIABLES ================ */
+/* ================ MIXINS ================ */
+/* ================ SCREEN ================ */
+body {
+  background-color: black;
+  color: #333333;
+  font-family: 'Ubuntu', sans-serif;
+  margin: 0 auto;
+}
+
+header, footer {
+  clear: left;
+}
+
+header {
+  background-color: white;
+  border-bottom: 1px solid #bbbbbb;
+  background-color: white;
+  text-align: center;
+  overflow: hidden;
+  padding: 0;
+}
+header h1 {
+  font-family: Ubuntu;
+  font-weight: bold;
+  font-size: 100px;
+  line-height: 100px;
+}
+
+footer {
+  padding: 20px;
+  background-color: black;
+  color: white;
+  text-align: center;
+  font-size: 80%;
+}
+
+div.main {
+  display: table;
+  width: 100%;
+}
+div.main article, div.main nav {
+  background-color: white;
+  display: table-cell;
+  padding: 0 1em 20px;
+}
+div.main article > * {
+  max-width: 40em;
+  text-align: justify;
+}
+div.main article p + p {
+  text-indent: 2em;
+}
+div.main article h1 {
+  font-size: 40px;
+  line-height: 60px;
+  text-transform: small-caps;
+  font-family: Ubuntu;
+  clear: both;
+  text-align: left;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  font-weight: bold;
+  text-align: center;
+}
+div.main article h2 {
+  font-size: 32px;
+  line-height: 40px;
+  text-transform: small-caps;
+  font-family: Ubuntu;
+  clear: both;
+  text-align: left;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+div.main article h3 {
+  font-size: 32px;
+  line-height: 40px;
+  text-transform: small-caps;
+  font-family: Ubuntu;
+  clear: both;
+  text-align: left;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  font-weight: normal;
+}
+div.main article h4 {
+  font-size: 32px;
+  line-height: 40px;
+  text-transform: small-caps;
+  font-family: Ubuntu;
+  clear: both;
+  text-align: left;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  font-weight: lighter;
+  font-style: italic;
+}
+div.main article h5 {
+  font-size: 24px;
+  line-height: 40px;
+  text-transform: small-caps;
+  font-family: Ubuntu;
+  clear: both;
+  text-align: left;
+  font-weight: normal;
+}
+div.main article h6 {
+  font-size: 24px;
+  line-height: 40px;
+  text-transform: small-caps;
+  font-family: Ubuntu;
+  clear: both;
+  text-align: left;
+  font-weight: lighter;
+  font-style: italic;
+}
+div.main article ul {
+  list-style-type: circle;
+  margin-left: 2em;
+}
+div.main nav {
+  width: 33%;
+  border-right: 1px solid #bbbbbb;
+  text-align: right;
+}
+div.main nav ul {
+  list-style: none;
+  padding-right: 2em;
+}
+div.main nav ul li {
+  color: gray;
+}
+div.main nav a {
+  color: #333333;
+  text-decoration: none;
+  cursor: pointer;
+}
+div.main nav a.selected {
+  font-style: italic;
+}
+
+/* ================ MOBILE/SMALL SCREEN ================ */
+@media screen and (max-width: 640px) {
+  div.main article, div.main nav {
+    margin-bottom: 20px;
+    display: block;
+    width: 100%;
+    padding: 20px 0;
+    margin: 0;
+    max-width: 640px;
+    float: right;
+    clear: both;
+    border-bottom: 1px solid gray;
+    border-right: 0;
+  }
+  div.main article > *, div.main nav > * {
+    padding: 0 0.5em;
+  }
+}
+/* ================ PRINT ================ */
+@media print {
+  div.main article, div.main nav {
+    margin-bottom: 20px;
+    display: block;
+    width: 100%;
+    padding: 20px 0;
+    margin: 0;
+    max-width: 640px;
+    float: right;
+    clear: both;
+    border-bottom: 1px solid gray;
+    border-right: 0;
+  }
+  div.main article > *, div.main nav > * {
+    padding: 0 0.5em;
+  }
+}

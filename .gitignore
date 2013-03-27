@@ -1,0 +1,6 @@
+public/org/*
+*~
+*#
+sass/.sass-cache/*
+tmp/*
+htaccess.txt
