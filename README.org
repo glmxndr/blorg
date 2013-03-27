@@ -4,7 +4,7 @@
 
   Blorg is a tiny sinatra app allowing to serve org-mode files.
 
-  It powers the [[http://blorg.hegemonikon.org][blorg.hegemonikon]] website.
+  It powers the [[http://blorg.hegemonikon.org/][blorg.hegemonikon]] website.
 
   Blorg converts org-mode files to javascript in the browser
   thanks to the org-js project.
