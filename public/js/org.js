@@ -4,17 +4,12 @@
 This project aims to provide a parser and easily customizable renderer
 for [[http://orgmode.org/][Org-Mode]] files in JavaScript.
 
-
-# This is a comment!
-
-#+INCLUDE: "../test/include/doc_header.org"
-
 * =Org= : the Main object
 
   The global context is extended with only one object, named =Org=.
 
 */
-Org = function(params){
+var Org = function(params){
   this.version    = "0.1";
   this.apiversion = "7.6";
   this.Config     = Org.getConfig(this, params);
@@ -58,7 +53,6 @@ Org = function(params){
    + =src<p= :: first paragraph preceding a =BEGIN_SRC= item
    + =src<<p= :: any paragraph preceding a =BEGIN_SRC= item
    + =src/..= :: parent of a =BEGIN_SRC= item
-
 
 */
 Org.Path = (function(){
@@ -118,18 +112,10 @@ Org.getConfig = function(org, params){
   */
   _C.tabWidth = params.tabWidth || 4;
 
-
   return _C;
 
 };
-
-/*orgdoc+/
-  #+END_SRC
-
-** Tab width
-** URL protocols
-
-/---orgdoc
+/*orgdoc
 * =Org.Regexps= : the regexp bank
 
   The parser needs a lot of regular expressions.
@@ -327,6 +313,13 @@ Org.getUtils = function(org, params){
   ** =Utils= object to be returnedn aliased as =_U=.
   */
   var _U = {
+
+    // Last item of an aray
+    last: function(arr){
+      return (arr && arr.length) 
+        ? arr[arr.length - 1] 
+        : null;
+    },
 
     // Mimics the M-q function in Emacs (fill-paragraph)
     fillParagraph: function(str, length){
@@ -650,14 +643,15 @@ Org.getUtils = function(org, params){
     */
     get: function(location){
       var result = null;
-      var $ = jQuery;
-      if (!$) {
-        $ = Zepto;
-      }
-      if($){
+      // Get the global object as globl.
+      var globl = null;
+      !function(){globl = this;}();
+      // Detect jQuery or Zepto.
+      var $lib = globl.jQuery || globl.Zepto;
+      if($lib){
         // If we're in the browser, org.js requires jQuery...
         // Maybe to refactor to using XHR / ActiveX ourselves
-        $.ajax({
+        $lib.ajax({
           async: false,
           url: location,
           dataType: 'text',
@@ -1056,7 +1050,7 @@ Org.getMarkup = function(org, params){
     _U.TreeNode.call(this, parent, {"nodeType": "Link", leaf: true});
     this.raw = raw;
     this.url = url;
-    this.desc = desc;
+    this.desc = Markup.parse(this, desc);
     this.token = token;
     this.type = getLinkType(this);
   };
@@ -1154,7 +1148,7 @@ Org.getMarkup = function(org, params){
     return new constr(parent);
   };
   EmphMarkers.getRegexpAll = function(){
-    return (/(^(?:.|\n)*?)(([\/*+_])([^\s].*?[^\s\\]|[^\s\\])\3)/);
+    return (/(^[\s\S]*?)(([\/*+_])([^\s][\s\S]*?[^\s\\]|[^\s\\])\3)/);
   };
   Markup.EmphMarkers = EmphMarkers;
 
@@ -1232,7 +1226,7 @@ Org.getMarkup = function(org, params){
       length  = pre.length + inner.length + (hasEmph ? 2 : 0);
       if(length === 0){break;}
       rest    = rest.substr(length);
-      if(_U.notBlank(pre)){ this.append(makeInline(EmphRaw, this, pre)); }
+      this.append(makeInline(EmphRaw, this, pre)); 
       if(hasEmph !== void 0){
         this.append(makeInline(EmphMarkers[token].constr, this, inner));
       }
@@ -1530,11 +1524,6 @@ Org.getMarkup = function(org, params){
       tokens[t] = fn;
       return t;
     });
-
-    /*orgdoc
-    ***** Normalizing spaces
-    */
-    str = str.replace(/\s+/g, ' ');
 
     /*orgdoc
     ***** Processing emphasis markup (*bold*, /italic/, etc.)
@@ -1915,6 +1904,33 @@ Org.getContent = function(org, params){
     return this;
   };
 
+  /*orgdoc
+  *** Quote block
+  */
+  var QuoteBlock = function(parent, line){
+    ContentMarkupBlock.call(this, parent);
+    BeginEndBlock.call(this, parent, line, "QUOTE", "QuoteBlock");
+  };
+  LineDef.QUOTE = {
+    id:       "QUOTE",
+    beginEnd: 1,
+    rgx:      RLT.beginBlock("QUOTE"),
+    constr:   QuoteBlock
+  };
+  Content.QuoteBlock = QuoteBlock;
+  QuoteBlock.prototype = Object.create(BeginEndBlock.prototype);
+  QuoteBlock.prototype.finalize = function () {
+    var lastLine = this.lines.pop();
+    var m;
+    if(lastLine && (m = lastLine.match(/^\s*--\s+(.*)\s*$/))) {
+      this.signature = OM.parse(this, m[1]);
+    } else {
+      this.lines.push(lastLine);
+    }
+    var content = this.lines.join("\n");
+    var inline = OM.parse(this, content);
+    this.children.push(inline);
+  };
 
   /*orgdoc
   *** Verse block
@@ -1931,26 +1947,7 @@ Org.getContent = function(org, params){
   };
   Content.VerseBlock = VerseBlock;
   VerseBlock.prototype = Object.create(BeginEndBlock.prototype);
-  VerseBlock.prototype.finalize = ContentMarkupBlock.prototype.finalize;
-
-
-  /*orgdoc
-  *** Quote block
-  */
-  var QuoteBlock = function(parent, line){
-    ContentMarkupBlock.call(this, parent);
-    BeginEndBlock.call(this, parent, line, "QUOTE", "QuoteBlock");
-  };
-  LineDef.QUOTE = {
-    id:       "QUOTE",
-    beginEnd: 1,
-    rgx:      RLT.beginBlock("QUOTE"),
-    constr:   QuoteBlock
-  };
-  Content.QuoteBlock = QuoteBlock;
-  QuoteBlock.prototype = Object.create(BeginEndBlock.prototype);
-  QuoteBlock.prototype.finalize = ContentMarkupBlock.prototype.finalize;
-
+  VerseBlock.prototype.finalize = QuoteBlock.prototype.finalize;
 
   /*orgdoc
   *** Centered-text block
@@ -2888,7 +2885,7 @@ Org.getRenderers = function(org){
       *** =Link=
       */
       Link: function(n, r){
-        return "[[" + n.desc + "][" + n.url + "]]";
+        return "[[" + r.render(n.desc) + "][" + n.url + "]]";
       },
 
       /*orgdoc
@@ -3218,7 +3215,7 @@ Org.getRenderers = function(org){
       Link: function(n, r){
         return {
           "type":"link",
-          "content":n.content,
+          "content": r.render(n.desc),
           "url": n.url
         };
       },
@@ -3388,23 +3385,6 @@ Org.getRenderers = function(org){
       },
 
       /*orgdoc
-      *** =typo(str, renderer)=                                                :function:
-           + Purpose :: Applies light typographical preferences for French language
-           + Arguments :: str, renderer
-      */
-      typo: function(str, r){
-        str = "" + r.htmlize(str, r);
-        str = str.replace(/\s*(,|\.|\)|\])\s*/g, "$1 ");
-        str = str.replace(/\s*(\(|\[)\s*/g, " $1");
-        str = str.replace(/\s*(;|!|\?|:)\s+/g, "&nbsp;$1 ");
-        str = str.replace(/\s*(«)\s*/g, " $1&nbsp;");
-        str = str.replace(/\s*(»)\s*/g, "&nbsp;$1 ");
-        // Restore entities broken by the ';' typo rule...
-        str = str.replace(/(&#?[0-9a-zA-Z.]+)&nbsp;;/g, "$1;");
-        return str;
-      },
-
-      /*orgdoc
       ** Rendering inline items
       *** =IgnoredLine=
       */
@@ -3425,7 +3405,7 @@ Org.getRenderers = function(org){
       */
       EmphRaw: function(n, r){
         return "<span>" +
-                r.typo(n.content, r) + "</span>";
+                r.htmlize(n.content, r) + "</span>";
       },
 
       /*orgdoc
@@ -3489,7 +3469,7 @@ Org.getRenderers = function(org){
       */
       Link: function(n, r){
         return "<a class='link' href='" + n.url + "'>" +
-                r.htmlize(n.desc, r) + "</a>";
+                r.render(n.desc) + "</a>";
       },
 
       /*orgdoc
@@ -3654,7 +3634,11 @@ Org.getRenderers = function(org){
            All new lines are replaced by a =br= tag.
       */
       VerseBlock: function(n, r){
-        var out = "<pre class='verse'>\n" + r.renderChildren(n, r) + "</pre>\n";
+        var s = "";
+        if (n.signature) {
+          var s = "<figcaption>" + r.render(n.signature) + "</figcaption>";
+        }
+        var out = "<figure class='verse'><pre class='verse'>\n" + r.renderChildren(n, r) + "</pre>" + s + "</figure>\n";
         return out;
       },
 
@@ -3666,7 +3650,11 @@ Org.getRenderers = function(org){
            this declaration is put on a new line.
       */
       QuoteBlock: function(n, r){
-        var out = "<blockquote>\n" + r.renderChildren(n, r) + "</blockquote>\n";
+        var s = "";
+        if (n.signature) {
+          var s = "<figcaption>" + r.render(n.signature) + "</figcaption>";
+        }
+        var out = "<figure class='quote'><blockquote>\n" + r.renderChildren(n, r) + "</blockquote>" + s + "</figure>\n";
         return out;
       },
 

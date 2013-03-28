@@ -1,3 +1,5 @@
+@charset "UTF-8";
+
 /* ================ IMPORTS ================ */
 
 @import "compass/reset";
@@ -70,6 +72,10 @@ footer {
   font-size: 80%;
 }
 
+em {
+  font-style: italic;
+}
+
 div.main {
   display: table;
   width: 100%;
@@ -97,6 +103,29 @@ div.main {
     ul {
       list-style-type: circle;
       margin-left: 2em;
+    }
+
+    figure {
+      margin-left: 3em;
+      margin-top: 0.5*$base-line-height;
+      margin-bottom: 0.5*$base-line-height;
+      blockquote {
+        font-style: italic;
+        em {
+          font-style: normal;
+        }
+      }
+    }
+
+    figcaption {
+      font-style: italic;
+      margin-left: 3em;
+      &:before {
+        content: "— ";
+      }
+      em {
+        font-style: normal;
+      }
     }
   }
   nav {
