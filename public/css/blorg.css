@@ -1,5 +1,6 @@
 @charset "UTF-8";
 @import url("http://fonts.googleapis.com/css?family=Ubuntu:300,400,700,300italic,400italic,700italic&subset=latin,greek");
+@import url("http://fonts.googleapis.com/css?family=Ubuntu+Mono");
 /* ================ IMPORTS ================ */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -103,8 +104,19 @@ footer {
   font-size: 80%;
 }
 
+code {
+  font-family: "Ubuntu Mono";
+  white-space: pre;
+}
+
 em {
   font-style: italic;
+}
+
+pre {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  white-space: pre;
 }
 
 div.main {

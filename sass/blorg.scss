@@ -37,6 +37,7 @@ $header-height: 5* $base-line-height;
 /* ================ SCREEN ================ */
 
 @import url("http://fonts.googleapis.com/css?family=Ubuntu:300,400,700,300italic,400italic,700italic&subset=latin,greek");
+@import url("http://fonts.googleapis.com/css?family=Ubuntu+Mono");
 
 body {
     background-color: black;
@@ -72,8 +73,19 @@ footer {
   font-size: 80%;
 }
 
+code {
+  font-family: "Ubuntu Mono";
+  white-space: pre;
+}
+
 em {
   font-style: italic;
+}
+
+pre {
+  margin-top: 0.5*$base-line-height;
+  margin-bottom: 0.5*$base-line-height;
+  white-space: pre;
 }
 
 div.main {
