@@ -73,7 +73,7 @@ html {
 body {
   background-color: black;
   color: #333333;
-  font-family: 'Ubuntu', sans-serif;
+  font-family: "Ubuntu", sans-serif;
   margin: 0 auto;
 }
 
@@ -104,7 +104,41 @@ footer {
   font-size: 80%;
 }
 
-code {
+ol, ol.dec {
+  list-style-type: decimal;
+}
+
+ol.lalpha {
+  list-style-type: lower-alpha;
+}
+
+ol.ualpha {
+  list-style-type: upper-alpha;
+}
+
+ol.lroman {
+  list-style-type: lower-roman;
+}
+
+ol.uroman {
+  list-style-type: upper-roman;
+}
+
+ul {
+  list-style-type: circle;
+}
+
+sub {
+  vertical-align: sub;
+  font-size: 90%;
+}
+
+sup {
+  vertical-align: super;
+  font-size: 90%;
+}
+
+code, .code {
   font-family: "Ubuntu Mono";
   white-space: pre;
 }
@@ -123,19 +157,24 @@ div.main {
   display: table;
   width: 100%;
 }
-div.main article, div.main nav {
+div.main article#content, div.main nav {
   background-color: white;
   display: table-cell;
+}
+div.main nav {
   padding: 0 1em 20px;
 }
-div.main article > * {
+div.main article#content {
+  padding: 0 3em 20px;
+}
+div.main article#content > * {
   max-width: 40em;
   text-align: justify;
 }
-div.main article p + p {
+div.main article#content * + p {
   text-indent: 2em;
 }
-div.main article h1 {
+div.main article#content h1 {
   font-size: 40px;
   line-height: 60px;
   text-transform: small-caps;
@@ -145,9 +184,8 @@ div.main article h1 {
   margin-top: 15px;
   margin-bottom: 5px;
   font-weight: bold;
-  text-align: center;
 }
-div.main article h2 {
+div.main article#content h2 {
   font-size: 32px;
   line-height: 40px;
   text-transform: small-caps;
@@ -158,7 +196,7 @@ div.main article h2 {
   margin-bottom: 5px;
   font-weight: bold;
 }
-div.main article h3 {
+div.main article#content h3 {
   font-size: 32px;
   line-height: 40px;
   text-transform: small-caps;
@@ -169,7 +207,7 @@ div.main article h3 {
   margin-bottom: 5px;
   font-weight: normal;
 }
-div.main article h4 {
+div.main article#content h4 {
   font-size: 32px;
   line-height: 40px;
   text-transform: small-caps;
@@ -181,7 +219,7 @@ div.main article h4 {
   font-weight: lighter;
   font-style: italic;
 }
-div.main article h5 {
+div.main article#content h5 {
   font-size: 24px;
   line-height: 40px;
   text-transform: small-caps;
@@ -190,7 +228,7 @@ div.main article h5 {
   text-align: left;
   font-weight: normal;
 }
-div.main article h6 {
+div.main article#content h6 {
   font-size: 24px;
   line-height: 40px;
   text-transform: small-caps;
@@ -200,29 +238,29 @@ div.main article h6 {
   font-weight: lighter;
   font-style: italic;
 }
-div.main article ul {
+div.main article#content ul {
   list-style-type: circle;
   margin-left: 2em;
 }
-div.main article figure {
+div.main article#content figure {
   margin-left: 3em;
   margin-top: 10px;
   margin-bottom: 10px;
 }
-div.main article figure blockquote {
+div.main article#content figure blockquote {
   font-style: italic;
 }
-div.main article figure blockquote em {
+div.main article#content figure blockquote em {
   font-style: normal;
 }
-div.main article figcaption {
+div.main article#content figcaption {
   font-style: italic;
   margin-left: 3em;
 }
-div.main article figcaption:before {
+div.main article#content figcaption:before {
   content: "— ";
 }
-div.main article figcaption em {
+div.main article#content figcaption em {
   font-style: normal;
 }
 div.main nav {

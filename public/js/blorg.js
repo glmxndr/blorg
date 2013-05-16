@@ -13,7 +13,7 @@ if(!window.jQuery && window.Zepto) {
   };
 
   var org = new Org();
-  var renderer = org.Renderers.html();
+  var renderer = org.render.defaults.html;
 
   var replaceAnchors = function ($obj) {
     // Modifying all the anchor links
@@ -29,7 +29,7 @@ if(!window.jQuery && window.Zepto) {
 
   var renderInto = function (url, $el) {
     $.get(url, function (data) {
-      var root = org.Parser.parse(data);
+      var root = org.parseDocument(data);
       var html = renderer.render(root);    
       $el.html(html);
       replaceAnchors($el);
@@ -66,7 +66,7 @@ if(!window.jQuery && window.Zepto) {
       toLoad = path.replace(/^\/article\//, '');
     }
     if (toLoad) { 
-      renderInto('/org/' + toLoad + '.org', $('article')); 
+      renderInto('/org/' + toLoad + '.org', $('#content')); 
     }
   };
 
